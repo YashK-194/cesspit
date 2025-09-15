@@ -171,7 +171,6 @@ export default function NewRantPage() {
                 • Provoke with memes or wild digs (e.g., “iPhone’s a shiny
                 cage”). Stay on-topic.
               </li>
-              <li>• Use words like “slime” or “rot.”</li>
               <li>
                 • Speak your mind freely — no censorship, no sugarcoating.
               </li>
