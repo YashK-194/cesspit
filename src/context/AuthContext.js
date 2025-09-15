@@ -33,6 +33,8 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      // Ensure we block UI redirects while we verify profile state
+      setLoading(true);
       if (user) {
         const userData = {
           uid: user.uid,

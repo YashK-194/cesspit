@@ -17,11 +17,15 @@ import { db } from "./firebase";
 
 // User service for managing user profiles and data
 export const userService = {
-  // Check if user profile exists
+  // Check if user profile is completed (exists and profileCompleted flag true)
   async checkProfileExists(uid) {
     try {
       const userDoc = await getDoc(doc(db, "users", uid));
-      return userDoc.exists();
+      if (!userDoc.exists()) return false;
+      const data = userDoc.data();
+      // Backward compatible: if flag is missing, consider completed
+      if (data?.profileCompleted === false) return false;
+      return true;
     } catch (error) {
       console.error("Error checking profile existence:", error);
       return false;

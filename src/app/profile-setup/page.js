@@ -4,18 +4,11 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import Image from "next/image";
-import {
-  doc,
-  setDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
 export default function ProfileSetupPage() {
-  const { user, refreshProfile, setJustSignedUp } = useAuth();
+  const { user, refreshProfile, setJustSignedUp, justSignedUp } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -26,12 +19,26 @@ export default function ProfileSetupPage() {
   const [errors, setErrors] = useState({});
   const [checkingUsername, setCheckingUsername] = useState(false);
 
-  // Redirect if user is not authenticated
+  // Redirect away if not authenticated or profile already completed
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, [user, router]);
+    const check = async () => {
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+      try {
+        // If a profile already exists and they didn't just sign up, redirect home
+        const profileDoc = await getDoc(doc(db, "users", user.uid));
+        if (profileDoc.exists() && !justSignedUp) {
+          router.replace("/");
+        }
+      } catch (e) {
+        // Fail open to allow setup if check fails
+        console.warn("Profile existence check failed:", e);
+      }
+    };
+    check();
+  }, [user, router, justSignedUp]);
 
   // Pre-fill name from Firebase auth if available
   useEffect(() => {
@@ -43,18 +50,14 @@ export default function ProfileSetupPage() {
     }
   }, [user]);
 
-  // Check if username is available
+  // Check if username is available via dedicated usernames collection
   const checkUsernameAvailability = async (username) => {
     if (!username || username.length < 3) return false;
-
     try {
-      const usersRef = collection(db, "users");
-      const q = query(
-        usersRef,
-        where("username", "==", username.toLowerCase())
+      const usernameDoc = await getDoc(
+        doc(db, "usernames", username.toLowerCase())
       );
-      const querySnapshot = await getDocs(q);
-      return querySnapshot.empty;
+      return !usernameDoc.exists();
     } catch (error) {
       console.error("Error checking username:", error);
       return false;
@@ -111,6 +114,24 @@ export default function ProfileSetupPage() {
 
     setLoading(true);
     try {
+      // Double-check server state: don't overwrite an existing profile
+      const userDocRef = doc(db, "users", user.uid);
+      const existingProfile = await getDoc(userDocRef);
+      if (existingProfile.exists() && !justSignedUp) {
+        setErrors({ submit: "Profile already exists. Redirecting..." });
+        router.replace("/");
+        return;
+      }
+
+      // Prevent claiming an already-taken username (race safety)
+      const existingUsernameDoc = await getDoc(
+        doc(db, "usernames", formData.username.toLowerCase())
+      );
+      if (existingUsernameDoc.exists()) {
+        setErrors({ username: "Username is already taken" });
+        setLoading(false);
+        return;
+      }
       // Create user profile document
       const userProfile = {
         uid: user.uid,
