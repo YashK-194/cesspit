@@ -295,6 +295,23 @@ export default function ProfilePage() {
             </button>
           </div>
         )}
+
+        <div className="mt-12 text-center text-white/60 text-sm px-4">
+          <p className="mb-3">
+            The Cesspit is a place for raw, unfiltered conversations. Share your
+            rants, join debates, and speak your mind freely — no censorship, no
+            sugarcoating.
+          </p>
+          <p>
+            💡 Have a bug, improvement idea, or just a thought? Drop a mail at{" "}
+            <a
+              href="mailto:thecesspit@proton.me"
+              className="underline hover:text-white"
+            >
+              thecesspit@proton.me
+            </a>
+          </p>
+        </div>
       </main>
     </div>
   );

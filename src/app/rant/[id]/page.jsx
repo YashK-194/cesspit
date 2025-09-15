@@ -8,6 +8,7 @@ import { getRant } from "../../../lib/rantService";
 import { voteOnRant, getUserVote } from "../../../lib/voteService";
 import { toggleBookmark, isBookmarked } from "../../../lib/bookmarkService";
 import CommentsSection from "../../../components/CommentsSection";
+import Linkify from "linkify-react";
 
 // Helper function to format time ago
 function formatTimeAgo(timestamp) {
@@ -244,9 +245,18 @@ export default function RantDetailsPage() {
               {rant.title}
             </h2>
           )}
-          <p className="text-white/90 leading-relaxed mb-4 whitespace-pre-wrap break-words overflow-wrap-anywhere">
-            {rant.content}
-          </p>
+          <Linkify
+            options={{
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className:
+                "text-blue-400 underline hover:text-blue-300 break-words",
+            }}
+          >
+            <p className="text-white/90 leading-relaxed mb-4 whitespace-pre-wrap break-words overflow-wrap-anywhere">
+              {rant.content}
+            </p>
+          </Linkify>
 
           {/* Action buttons */}
           <div className="flex items-center gap-4 text-white/60">

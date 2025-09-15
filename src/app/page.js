@@ -98,7 +98,7 @@ export default function Home() {
                 onClick={() => router.push("/new")}
                 className="flex-1 text-left bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3 text-white/50 hover:bg-zinc-900/70 hover:border-white/20 transition-all"
               >
-                What's making you angry today?
+                What's got you fired up today?
               </button>
             </div>
           </div>

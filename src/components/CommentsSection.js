@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { createComment, subscribeToComments } from "../lib/commentService";
 import { stanceService } from "../lib/stanceService";
 import StanceSelector from "./StanceSelector";
+import Linkify from "linkify-react";
 
 // Helper function to format time ago
 function formatTimeAgo(timestamp) {
@@ -295,9 +296,18 @@ export default function CommentsSection({ rantId, rantTitle }) {
                   )}
 
                   {/* Message content */}
-                  <p className="text-sm leading-relaxed break-words">
-                    {comment.content}
-                  </p>
+                  <Linkify
+                    options={{
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                      className:
+                        "text-blue-400 underline hover:text-blue-300 break-words",
+                    }}
+                  >
+                    <p className="text-white/90 whitespace-pre-wrap break-words">
+                      {comment.content}
+                    </p>
+                  </Linkify>
 
                   {/* Timestamp */}
                   <div

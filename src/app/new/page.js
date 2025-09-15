@@ -152,13 +152,37 @@ export default function NewRantPage() {
           {/* Guidelines */}
           <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
             <h3 className="text-sm font-semibold text-blue-400 mb-2">
-              Guidelines for a good rant:
+              Guidelines for a killer rant:
             </h3>
             <ul className="text-xs text-white/70 space-y-1">
-              <li>• Be passionate but respectful</li>
-              <li>• Present your argument clearly</li>
-              <li>• Back up your claims when possible</li>
-              <li>• Be prepared for counterarguments</li>
+              <li>
+                • Pick <b>Support</b> or <b>Against</b>. No fence-sitting. Stick
+                to the topic (e.g., “Android {">"} iPhone”).
+              </li>
+              <li>
+                • Be vicious and witty. Use sarcasm, hyperbole, or petty roasts.
+              </li>
+              <li>• Keep it short: 100-200 words. Hit hard, fast.</li>
+              <li>
+                • Roast arguments, not users. “Your take’s rancid garbage”
+                works; “You’re a loser” doesn’t.
+              </li>
+              <li>
+                • Provoke with memes or wild digs (e.g., “iPhone’s a shiny
+                cage”). Stay on-topic.
+              </li>
+              <li>• Use words like “slime” or “rot.”</li>
+              <li>
+                • Speak your mind freely — no censorship, no sugarcoating.
+              </li>
+              <li>
+                • No illegal, explicit, or doxxing content. Mods flush
+                violators.
+              </li>
+              <li>
+                • Reply to slams, quote dumb takes, and upvote the nastiest
+                ones.
+              </li>
             </ul>
           </div>
 
